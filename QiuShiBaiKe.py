@@ -8,15 +8,17 @@ def get_content_list(html_str):
     div_list = html.xpath("//div[@id='content-left']/div")
     content_list = []
     for div in div_list:
-        item = {"img": "https:" + div.xpath(".//img/@src")[0] if len(div.xpath(".//img/@src")) > 0 else None,
-                "name": div.xpath(".//h2/text()")[0].strip(),
-                "age": div.xpath(".//div[@class='author clearfix']/div/text()")[0]
-                if len(div.xpath(".//div[@class='author clearfix']/div/text()")) > 0 else None,
-                "content": div.xpath(".//div[@class='content']/span/text()")[0].strip()
-                if len(div.xpath(".//div[@class='content']/span/text()")) > 0 else None,
-                "stats-vote": div.xpath(".//span[@class='stats-vote']/i/text()")[0],
-                "stats-comments": div.xpath(".//span[@class='stats-comments']//i/text()")[0]
-                if len(div.xpath("//span[@class='stats-comments']//i/text()")) > 0 else None}
+        item = {}
+        img_str = "https:" + div.xpath(".//img/@src")[0] if len(div.xpath(".//img/@src")) > 0 else None
+        item["img"] = img_str[0: img_str.index("?")]
+        item["name"] = div.xpath(".//h2/text()")[0].strip()
+        item["age"] = div.xpath(".//div[@class='author clearfix']/div/text()")[0] \
+            if len(div.xpath(".//div[@class='author clearfix']/div/text()")) > 0 else None
+        item["content"] = div.xpath(".//div[@class='content']/span/text()")[0].strip() \
+                              if len(div.xpath(".//div[@class='content']/span/text()")) > 0 else None
+        item["stats-vote"] = div.xpath(".//span[@class='stats-vote']/i/text()")[0]
+        item["stats-comments"] = div.xpath(".//span[@class='stats-comments']//i/text()")[0] \
+            if len(div.xpath("//span[@class='stats-comments']//i/text()")) > 0 else None
         content_list.append(item)
     return content_list
 
